@@ -1,0 +1,98 @@
+//Created by: Andrew Eisenhour
+//Finished on: 10/27/2020
+//Implementation of Queue with Dynamic Memory Management
+
+#include <stdio.h>  //for input output
+#include <stdlib.h> //for rand function
+#include <time.h> //utilize rand generator
+struct node{  //declare node structure
+  char * data;  //stores pointer to string
+  struct node * next; //stores pointer to next node in queue
+};
+int enqueue(char *, struct node ** , struct node **); //declare queue method
+char * dequeue(struct node **, struct node **); //declare dequeue method
+char * makeString(char *);  //declare makeString method
+
+int main(void) {  //start main
+  
+  struct node * front;  //pointer to front node
+  struct node * back; //pointer to back node
+  
+  front = back = NULL;  //initialize each node to null
+
+  int lcv; //loop control variable
+  char * assign = (char *)malloc(1000001*sizeof(char)); //allocate memory for the string
+
+  for (lcv=0; lcv<1000000; lcv++){  //creates string
+    assign[lcv]=rand()%26+65; //assign a random uppercase character
+  }
+  assign[1000000]='\0'; //add ending character for a string
+  
+  //Tester
+  int lcv2=0; //loop control variable 2
+  int lcv3=0; //loop control variable 3
+  int lcv4=0; //loop control variable 4
+  while (lcv2<10){  //queue ten nodes
+    enqueue(makeString(assign), &front, &back); //enqueue
+    lcv2++;  //increment loop control variable 2
+  } //end while  
+  while (lcv3<100000){  //enqueue and dequeue 100000 nodes
+    enqueue(makeString(assign), &front, &back); //enqueue
+    dequeue(&front, &back); //dequeue
+    lcv3++; //increment loop control variable 3
+  }
+  while (lcv4<12){  //dequeue 12 nodes
+    dequeue(&front, &back); //dequeue
+    lcv4++; //increment loop control variable 4
+  }
+  return 0; //return
+}
+int enqueue(char * string, struct node ** front, struct node ** back){  //enqueue method, takes data to be stored, pointer pointer to front, and pointer pointer and back
+  
+  struct node * temp = (struct node *) malloc(sizeof(struct node)); //allocate memory for a node
+  (*temp).data = string;  //assign string to data
+  (*temp).next = NULL;  //set next to node
+  if (*front == NULL){  //If the queue is empty
+    (*front) = temp;  //set front to new node
+    (*back) = temp; //set back to new node
+  }
+  else {  //If the queue is not empty
+    (*temp).next = *back; //set the next node to be the current back
+    *back = temp; //set the new node to be the back
+  }
+  return 0; //return
+}
+char * dequeue(struct node ** front, struct node ** back){  //dequeue method, takes pointer pointers to front and back
+  struct node * store = *back;  //store the current back node
+  
+  if ((*front)==NULL){  //If the queue is empty
+    free(store);  //free the store variable
+    return NULL;  //nothing to return
+  }
+  else if ((*front)==(*back)){  //If the queue has one node
+    char * string = (**front).data; //store the data
+    *front = NULL;  //set the front to point to null
+    *back = NULL; //set the back to point to null
+    free(store);  //free the stored node
+    return string;  //return the data
+  }
+  else {  //More than one node
+    char * string = (**front).data; //store the data
+    store = *back;  //store the back node
+    while ((*store).next!=(*front)){  //get the next to front node
+      store = (*store).next;  //iterate through the queue
+    } //end while
+    (*store).next = NULL; //the second node is now the front
+    free(*front); //free the front from memory
+    *front = store; //the second node is the new front  
+    return string;  //return the data
+  } 
+}
+char * makeString(char * assign){ //method that makes a random 1000000 character string
+  srand(time(0));  //seed rand with time in nanoseconds
+  int lcv;  //loop control variable
+  for (lcv=0; lcv<1000000; lcv++){  //loop through each character assignment
+    assign[lcv]=rand()%26+65; //assign random uppercase character
+  }
+  return assign;  //return the newly made string, already has ending character
+}
