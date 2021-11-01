@@ -1,0 +1,112 @@
+//Prim's Algorithm
+//Written By: Andrew Eisenhour
+//Created On: 9/14/2020
+/*
+Worst Case: O(26N^2+20N+5)
+Best Case: Ω(21.5N^2+27.5N+13)
+Theta Case: θ(N^2)
+Runtime Analysis:
+  Worst Case:
+    Constants: 4
+    Arrays: N*N+3*N=5N
+    While: N comparisons
+      For: 1+N+(N-1)+6*N=16N
+      //If changes each time due to more visits
+      //Outside of while inside if processes: 7*(N*(N+1)/2)=3.5N^2+3.5N
+      3
+      For: 1+N+(N-1)+N*(2)=4N
+      //Additional if that reduces: 5*(N*(N+1)/2)=(5N^2+5N)/2
+      1
+      Total While: N+N*(20N+4)+3.5N^2+3.5N+2.5N^2+2.5N=26N^2+11N
+    Printing:
+      1
+      1+N+(N-1)*N(7)
+      Total Printing: 9N
+    Return: 1
+  Total Worst Case: O(26N^2+20N+5)
+  Best Case:
+    Constants: 4
+    Arrays: N*N+3*N=5N
+    While: N comparisons
+      For: 1+N+(N-1)+6*N=16N
+      //If changes each time due to more visits
+      //Outside of while inside if processes: 7N+8
+      3
+      For: 1+N+(N-1)+N*(2)=4N
+      //Additional if that reduces: 5*(N*(N+1)/2)=(5N^2+5N)/2
+      1
+      Total While: N+N*(20N+4)+6N+8+2.5N^2+2.5N=21.5N^2+13.5N+8
+    Printing:
+      1
+      1+N+(N-1)*N(7)
+      Total Printing: 9N
+    Return: 1
+  Total Best Case: Ω(21.5N^2+27.5N+13)
+
+*/
+#include <stdio.h>  //Included for output
+#include <stdbool.h>  //Included for booleans
+#include <limits.h> //Included for INT_MAX
+//Prim's Algorithm
+//Written By: Andrew Eisenhour
+//Created On: 9/14/2020
+//Limited to distances under 100000
+int main(void) {
+  int SIZE = 5;
+  int matrix[5][5]={
+    { 0, 2, 0, 6, 0 },
+    { 2, 0, 3, 8, 5 },
+    { 0, 3, 0, 0, 1 },
+    { 6, 8, 0, 0, 9 },
+    { 0, 5, 7, 9, 0 }
+  };
+  int start = 0;  //Starting node
+  int finish = 4; //Ending node
+  int curr = start; //Current variable for tracking present node
+  int tempDistance; //Calculable distance for each iteration
+  int min = 100001; //Comparison value
+  int lcv;  //loop control variable
+  int lcv2; //loop control variable
+  int counter = 0;  //counter for while loop
+  bool vis[5] = {false, false, false, false, false};  //Initialize visited
+  int dis[5] = {INT_MAX, INT_MAX, INT_MAX, INT_MAX, INT_MAX}; //Initialize distance to each node to max
+  int last[5] = {-1, -1, -1, -1, -1}; //Initialize last visited node to invalid
+  while (counter<SIZE){ //Start loop
+    for (lcv = 0; lcv < SIZE; lcv++){  //Process through each adjacent node
+      tempDistance = 0; //Temporary varaible
+      if (!vis[lcv] && matrix[curr][lcv]!=0){ //If not visited and distance not zero
+        if (dis[curr]!=INT_MAX){  //If distance is not maximum
+          tempDistance = matrix[curr][lcv]; //Set the current distance for comparison, just current distance for Prims
+          if (tempDistance<dis[lcv]){ //If the current distance is shorter
+            dis[lcv] = tempDistance;  //Update distance
+          } //End current distance
+        } //End distance not max
+        else {
+          dis[lcv] = matrix[curr][lcv]; //Update distance from maximum
+        } //End else
+      last[lcv] = curr; //Update previously visited node 
+        
+      } //End not visited and distance not zero
+    } //End for loop
+    vis[curr] = true; //Updated visited
+    min = 10001; //Comparison value
+    for (lcv2 = 0; lcv2 < SIZE; lcv2++){ //Choose next node
+      if(!vis[lcv2]){ //If not visited
+        if(dis[lcv2]<min){  //If distance is shorter
+          curr = lcv2;  //Choose this node
+          min = dis[lcv2];  //Update minimum
+        } //End distance is shorter
+      } //End not visited
+    } //End for loop
+    counter++;
+  } //End while
+  printf("Distance\tLast\n"); //Initial printing for formatting
+  int lcv3; //Printing control variable
+  for (lcv3 = 0; lcv3<SIZE; lcv3++){ //Printing loop
+    if (dis[lcv3]==INT_MAX){  //If value still maximimized, must be starting node
+      dis[lcv3] = 0;  //Set max distances to zero for presentation
+    } //End if
+    printf("%d\t\t\t%d\n", dis[lcv3], last[lcv3]);  //Print line
+  } //End for
+  return 0; //Return
+}
