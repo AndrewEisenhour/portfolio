@@ -1,56 +1,66 @@
-import java.util.Scanner;
+package icpc2020;
+
+import java.util.*;
+import java.io.*;
+import java.math.*;
 
 public class Skeleton {
-//A rough draft for some common ICPC tasks
-	public static void main(String args[]) {
-		Scanner scan = new Scanner(System.in);
-		
+	static class solver {
+		public void run(InputReader cin, PrintWriter out) {
+			//Main program goes here
+			
+			
+			
+			
+			
+			
+		}
 	}
-	
-	/*public static boolean sameTo(char[][] inputs, int j, int i) {
-		//This method takes a char array of inputs and compares if they are the same as characters of the second input
-		boolean checker = true;
-		for (int k = 0; k < i; k++) {
-			if (inputs[j][k] != inputs[j + 1][k]) {
-				checker = false;
-			}
+
+	public static void main(String[] args) {
+		PrintWriter out = new PrintWriter(System.out);
+		InputReader cin = new InputReader(System.in);
+		solver Task = new solver();
+		Task.run(cin, out);
+		out.close();
+	}
+
+	static class InputReader { // Fast Reader
+		public BufferedReader reader;
+		public StringTokenizer tokenizer;
+
+		public InputReader(InputStream stream) {
+			reader = new BufferedReader(new InputStreamReader(stream), 32768);
+			tokenizer = null;
 		}
-		return checker;
-	}*/
-	
-	/*public static double distance(double x1, double y1, double x2, double y2) {
-	 	//This method returns the distance between two points
-        double dis = (y2 - y1);
-        double dis2 = (x2 - x1);
-        double distance = Math.pow(dis, 2) + Math.pow(dis2, 2);
-        return distance;
-    }*/
-	
-	/*public static double herons(double a, double b, double c) {
-		//This formula returns the area of a triangle based on side length
-		 double p = (a + b + c) / 2;
-		 double area = Math.sqrt(p * (p - a) * (p - b) * (p - c));
-		 return area;
-		}*/
-	
-	/*public static double slope(double x1, double y1, double x2, double y2) {
-		//returns the slope between two points
-		double slope = (y2-y1)/(x2-x1);
-		return slope;
-	}*/
-	
-	/*public static char[][] moveDown(char[][] tree, int i, int j){
-		//This method moves a character lower in an array, modify '.' and 'a' to be blank and special, '#' represents unmovable
-		while (i<tree.length-1) {
-			if (tree[i+1][j]=='#' || tree[i+1][j]=='a') {
-				break;
+
+		public String nextLine() {
+			String line = "";
+			try {
+				line = reader.readLine();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
-			else {
-				tree[i][j]='.';
-				tree[i+1][j]='a';
-			}
-			i++;
+			return line;
 		}
-		return tree;
-	}*/
+
+		public String next() {
+			while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+				try {
+					String line = reader.readLine();
+					/* line == null ? end of file */
+					tokenizer = new StringTokenizer(line);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return tokenizer.nextToken();
+		}
+
+		public int nextInt() {
+			return Integer.parseInt(next());
+			// return Long.parseLong(next()); Double Integer
+			// return new BigInteger(next(), 16); // as Hex
+		}
+	}
 }
