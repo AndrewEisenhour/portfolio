@@ -1,0 +1,62 @@
+#include <stdio.h>  //Included for output
+#include <stdbool.h>  //Included for booleans
+#include <limits.h> //Included for INT_MAX
+//Djikstra's Algorithm
+//Written By: Andrew Eisenhour
+//Created On: 9/14/2020
+//Limited to distances under 10000
+int main(void) {
+  int matrix[5][5]={
+    {0, 5, 3, 3, 5},
+    {5, 0, 2, 3, 5},
+    {3, 2, 0, 1, 4},
+    {3, 3, 1, 0, 1},
+    {5, 5, 4, 1, 0}
+  };
+  int start = 1;  //Starting node
+  int finish = 4; //Ending node
+  int curr = start; //Current variable for tracking present node
+  int tempDistance; //Calculable distance for each iteration
+  int min = 10001; //Comparison value
+  int lcv;  //loop control variable
+  int lcv2; //loop control variable
+  bool vis[5] = {false, false, false, false, false};  //Initialize visited
+  int dis[5] = {INT_MAX, INT_MAX, INT_MAX, INT_MAX, INT_MAX}; //Initialize distance to each node to max
+  int last[5] = {-1, -1, -1, -1, -1}; //Initialize last visited node to invalid
+  while (!vis[finish]){ //Start loop
+    for (lcv = 0; lcv < 5; lcv++){  //Process through each adjacent node
+      tempDistance = 0; //Temporary varaible
+      if (!vis[lcv] && matrix[curr][lcv]!=0){ //If not visited and distance not zero
+        if (dis[curr]!=INT_MAX){  //If distance is not maximum
+          tempDistance = matrix[curr][lcv] + dis[curr]; //Set the current distance for comparison
+          if (tempDistance<dis[lcv]){ //If the current distance is shorter
+            dis[lcv] = tempDistance;  //Update distance
+          } //End current distance
+        } //End distance not max
+        else {
+          dis[lcv] = matrix[curr][lcv]; //Update distance from maximum
+        } //End else
+      last[lcv] = curr; //Update previously visited node 
+        
+      } //End not visited and distance not zero
+    } //End for loop
+    vis[curr] = true; //Updated visited
+    min = 10001; //Comparison value
+    for (lcv2 = 0; lcv2 < 5; lcv2++){ //Choose next node
+      if(!vis[lcv2]){ //If not visited
+        if(dis[lcv2]<min){  //If distance is shorter
+          curr = lcv2;  //Choose this node
+          min = dis[lcv2];  //Update minimum
+        } //End distance is shorter
+      } //End not visited
+    } //End for loop
+  } //End while
+  int lcv3; //Printing control variable
+  for (lcv3 = 0; lcv3<5; lcv3++){ //Printing loop
+    if (dis[lcv3]==INT_MAX){  //If value still maximimized, must be starting node
+      dis[lcv3] = 0;  //Set max distances to zero for presentation
+    } //End if
+    printf("%d\n", dis[lcv3]);  //Print line
+  } //End for
+  return 0; //Return
+}
