@@ -1,0 +1,48 @@
+//Created by: Andrew Eisenhour
+//Finished on: 10/29/2020
+//Counter sort program: linear sort that makes a single pass through an array and counts the occurrences of each number
+
+#include <stdio.h>  //Input/Output Library
+#include <stdlib.h> //Needed for random
+#include <time.h> //Needed for time
+
+int * counterSort(int unsorted[], int size){  //Performs the counter sort operation
+  static int counter[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};  //Initialize counters for each number at zero
+  int lcv;  //Loop control variable
+  
+  for (lcv = 0; lcv<size; lcv++){ //Loop through each unsorted item
+    counter[unsorted[lcv]]++; //Adds one to the counter at the proper position for each number
+  } //end for
+
+  return counter; //return a pointer to the counter array
+} //end counterSort
+void printCounter(int sorted[]){  //helper print method for output
+  int lcv;  //loop control varaible
+  int num;  //current number of numbers that is being printed
+  for (lcv = 0; lcv<10; lcv++){ //loop through each entry in the counter array
+    num = *(sorted+lcv);  //set current number of numbers to be printed
+    while(num>0){ //loop through the number of numbers
+      printf("%d ", lcv); //print the current number with a space
+      num--;  //decrement
+    } //end while
+    printf("\n"); //print newline for clarity
+  } //end for
+} //end printCounter
+
+int main(void) {  //main tester method
+  int unsorted[1000]; //create 1000 interger array
+  srand(time(0)); //seed random with the current time
+  int lcv;  //loop control variable
+  int lcv2; //loop control variable 2
+  int size; //size of array
+  int * sorted; //pointer to the sorted counter array
+  for (lcv2 = 0; lcv2<100; lcv2++){ //loop through one hundred arrays
+    for (lcv = 0; lcv<1000; lcv++){ //loop through one thousand integers
+      unsorted[lcv]=rand()%10;  //assign random one-digit integer to array
+    } //end for
+    size = sizeof(unsorted)/sizeof(int);  //the size of the unsorted array divided by the size of an integer yields the length of the array
+    sorted = counterSort(unsorted, size); //call the counterSort method to sort the array
+    printCounter(sorted); //call the printCounter method for output
+  } //end for
+  return 0; //return nothing
+} //end main
