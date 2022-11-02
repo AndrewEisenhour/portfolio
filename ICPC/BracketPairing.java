@@ -1,8 +1,6 @@
-package northcentral;
-
 import java.util.*;
 
-class BracketPairing2 {
+class BracketPairing {
 	static boolean isOpen(char a) {
 		if (a == '[' || a == '{' || a == '(' || a == '<') {
 			return true;
