@@ -1,5 +1,3 @@
-package northcentral;
-
 import java.util.*;
 
 public class LandEquality {
